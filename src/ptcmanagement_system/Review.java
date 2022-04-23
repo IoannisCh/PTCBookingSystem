@@ -2,8 +2,10 @@
 {
   private final String review;
   
-  public Review (String title, int id, boolean onLoan, String targetDate, String review, String type) {
-      super(title, id, onLoan, targetDate, type);
+  public Review (String title, int id, boolean onLoan, String targetDate, String lesson, String type) {
+      super( fisrtName, gender, DOB, address, 
+          contactNumber, courses, toutionBalance, costOfCourse, 
+          studentID, review, title);
       this.review = review;
   }
   
