@@ -8,16 +8,19 @@ import javax.swing.*;
 
 public class Ptc implements ActionListener {
     
-    private JLabel label = new JLabel("Number of clicks:  0     ");
+    private int studentCount;
+    private JLabel label;
     private JFrame frame = new JFrame();
     
-    public Ptc() {
+    // Updated Constructor to handle the count
+    public Ptc(int count) {
+        this.studentCount = count;
+        
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Fallback to default
-        }
+        } catch (Exception e) {}
 
+        this.label = new JLabel("Managing " + studentCount + " enrollments.");
         JButton button = new JButton("Click Me");
         button.addActionListener(this);
 
@@ -37,7 +40,7 @@ public class Ptc implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        label.setText("Action Triggered!");
+        label.setText("Action Triggered for " + studentCount + " students!");
     }
     
     public static void main(String[] args) { 
@@ -48,17 +51,17 @@ public class Ptc implements ActionListener {
         }
 
         try {
-            final int numOfStudents = Integer.parseInt(input);
-            System.out.println("Enrolling " + numOfStudents + " students...");
+            final int count = Integer.parseInt(input);
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new Ptc();
+                    // Pass the count into the constructor here!
+                    new Ptc(count);
                 }
             });
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }    
 }
