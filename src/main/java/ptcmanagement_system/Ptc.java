@@ -1,61 +1,64 @@
 package ptcmanagement_system;
 
-import java.util.Scanner;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
-
-public class Ptc implements ActionListener{
+public class Ptc implements ActionListener {
     
     private JLabel label = new JLabel("Number of clicks:  0     ");
     private JFrame frame = new JFrame();
     
     public Ptc() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Fallback to default
+        }
 
-        // the clickable button
         JButton button = new JButton("Click Me");
-        button.addActionListener((ActionListener) this);
+        button.addActionListener(this);
 
-        // the panel with the button and text
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         panel.setLayout(new GridLayout(0, 1));
         panel.add(button);
         panel.add(label);
 
-        // set up the frame and display it
         frame.add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("GUI");
+        frame.setTitle("PTC System");
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    
     }
     
-     public void actionPerformed(ActionEvent e) {
-        TestListString.populateList();
-        label.setText("Number of :");
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        label.setText("Action Triggered!");
     }
     
-    public static void main(String[] args) {  
-        System.out.print("Enter number of new enrollments: ");
-        Scanner in = new Scanner(System.in);
-        int numOfStudents = in.nextInt();
-        Student[] students = new Student[numOfStudents];
-    
-        for (int n = 0; n < numOfStudents; n++){
-            students[n] = new Student();
-            students[n].enroll();
-        }
-        
-    
-        for (int n = 0; n < numOfStudents; n++){
-            System.out.println(students[n]);
-    }
-        
-    new Ptc();
-}
-}
-    
+    public static void main(String[] args) { 
+        String input = JOptionPane.showInputDialog(null, "Enter number of new enrollments:");
 
+        if (input == null) {
+            System.exit(0);
+        }
+
+        try {
+            final int numOfStudents = Integer.parseInt(input);
+            System.out.println("Enrolling " + numOfStudents + " students...");
+
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new Ptc();
+                }
+            });
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }    
+}
