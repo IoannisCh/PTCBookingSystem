@@ -7,3 +7,7 @@ module 6WCM0027 for the academic year 2021/2022 semester B for the UH.
 The project after been compiled should generate a GUI for the Lesson Management System.
 
 The GUI is hard coded, there is no use of any framework.
+
+UPDATE:
+After 01/04/2026, the project changed course to be brought up to date, and progress to a modern approach. 
+There are massive changes since the original system.
