@@ -8,4 +8,6 @@ The project after been compiled should generate a GUI for the Lesson Management 
 
 The GUI is hard coded, there is no use of any framework.
 
-After 01/04/2026, the project changed to be brought up to date, and progress to a modern approach. There are massive changes since the original system.
+UPDATE:
+After 01/04/2026, the project changed course to be brought up to date, and progress to a modern approach. 
+There are massive changes since the original system.
