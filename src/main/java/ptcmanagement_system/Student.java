@@ -40,4 +40,9 @@ public class Student implements Serializable {
     public String toString() {
         return "ID: " + studentID + " | Name: " + firstName + " | Balance: £" + tuitionBalance;
     }
+
+public String getFirstName() { return firstName; }
+public String getStudentID() { return studentID; }
+public int getDOB() { return DOB; }
+public String getAddress() { return address; }
 }

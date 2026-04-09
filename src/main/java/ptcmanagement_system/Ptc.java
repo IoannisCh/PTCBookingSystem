@@ -1,50 +1,68 @@
 package ptcmanagement_system;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 public class Ptc extends JFrame {
     private ArrayList<Student> studentList = new ArrayList<>();
-    private DefaultListModel<String> listModel = new DefaultListModel<>();
-    private JList<String> displayList = new JList<>(listModel);
+    
+    // Table components
+    private JTable studentTable;
+    private DefaultTableModel tableModel;
 
     public Ptc() {
-        setTitle("PTC Booking System");
-        setSize(500, 400);
+        setTitle("PTC Management Dashboard");
+        setSize(850, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // UI Layout
+        // 1. Setup the Table Columns
+        String[] columns = {"Student ID", "First Name", "DOB", "Address", "Balance"};
+        tableModel = new DefaultTableModel(columns, 0);
+        studentTable = new JTable(tableModel);
+        
+        // 2. Layout
         setLayout(new BorderLayout(10, 10));
-        add(new JLabel("Current Enrolled Students:", SwingConstants.CENTER), BorderLayout.NORTH);
-        add(new JScrollPane(displayList), BorderLayout.CENTER);
+        
+        // Header
+        JLabel header = new JLabel("Registered Students Database", SwingConstants.CENTER);
+        header.setFont(new Font("Arial", Font.BOLD, 18));
+        header.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        add(header, BorderLayout.NORTH);
 
+        // Center: The Table (inside a ScrollPane)
+        add(new JScrollPane(studentTable), BorderLayout.CENTER);
+
+        // Bottom: Action Panel
+        JPanel actionPanel = new JPanel();
         JButton enrollBtn = new JButton("Enroll New Student");
+        enrollBtn.setPreferredSize(new Dimension(200, 40));
         enrollBtn.addActionListener(e -> openEnrollmentForm());
-        add(enrollBtn, BorderLayout.SOUTH);
-
-        // Pre-populate with one test user from your TestListString class
-        TestListString.populateList(studentList, listModel);
+        actionPanel.add(enrollBtn);
+        add(actionPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 
     private void openEnrollmentForm() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
+        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         JTextField nameF = new JTextField();
         JTextField dobF = new JTextField();
         JTextField addrF = new JTextField();
@@ -55,12 +73,11 @@ public class Ptc extends JFrame {
         panel.add(new JLabel("Address:")); panel.add(addrF);
         panel.add(new JLabel("Contact Number:")); panel.add(contactF);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Student Enrollment", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(null, panel, "New Student Enrollment", JOptionPane.OK_CANCEL_OPTION);
         
         if (result == JOptionPane.OK_OPTION) {
             try {
-                // Ensure Student.java has this constructor: 
-                // Student(String name, String gender, int dob, String addr, String contact, int course)
+                // Create Student object
                 Student s = new Student(
                     nameF.getText(), 
                     "N/A", 
@@ -69,19 +86,28 @@ public class Ptc extends JFrame {
                     contactF.getText(), 
                     1
                 );
+                
                 studentList.add(s);
-                listModel.addElement(s.toString());
+
+                // Add data to the Table Model as a new row
+                Object[] rowData = {
+                    s.getStudentID(), 
+                    s.getFirstName(), 
+                    s.getDOB(), 
+                    s.getAddress(), 
+                    "£0.00"
+                };
+                tableModel.addRow(rowData);
+
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error: Please check your inputs (DOB must be a number).");
+                JOptionPane.showMessageDialog(this, "Input Error: Check numbers and fields.");
             }
         }
     }
 
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {}
-
+        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); } 
+        catch (Exception e) {}
         SwingUtilities.invokeLater(() -> new Ptc());
     }
 }
